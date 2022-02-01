@@ -1,0 +1,4 @@
+.scene
+700 700
+.object
+obj_path texture texture

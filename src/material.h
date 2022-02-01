@@ -1,0 +1,8 @@
+//
+// Created by wang on 2022/2/1.
+//
+
+#ifndef CANARYRENDER_MATERIAL_H
+#define CANARYRENDER_MATERIAL_H
+
+#endif //CANARYRENDER_MATERIAL_H
