@@ -1,7 +1,7 @@
 //
 // Created by wang on 2022/2/1.
 //
-
+#pragma once
 #ifndef CANARYRENDER_TRIANGLE_H
 #define CANARYRENDER_TRIANGLE_H
 #include "base.h"
@@ -21,8 +21,8 @@ public:
     void setNormal(const std::array<Eigen::Vector3f, 3> &rhs);
     void setVertex(int idx, const Eigen::Vector4f &rhs);
     void setVertex(const std::array<Eigen::Vector4f, 3> &rhs);
-    void setTextureUV(int idx, const Eigen::Vector3f &rhs);
-    void setTextureUV(const std::array<Eigen::Vector3f, 3> &rhs);
+    void setTextureUV(int idx, const Eigen::Vector2f &rhs);
+    void setTextureUV(const std::array<Eigen::Vector2f, 3> &rhs);
 };
 
 #endif //CANARYRENDER_TRIANGLE_H

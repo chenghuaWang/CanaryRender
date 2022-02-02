@@ -12,12 +12,35 @@ Eigen::Matrix4f objtrans::getViewMatrix(Eigen::Vector3f eye_pos){
     return translate;
 }
 
+Eigen::Matrix4f objtrans::getYRotationMatrix(float angle){
+    Eigen::Matrix4f rotation;
+    angle = angle * Canary_PI / 180.f;
+    rotation << cosf(angle), 0, sinf(angle), 0,
+            0, 1, 0, 0,
+            -sinf(angle), 0, cosf(angle), 0,
+            0, 0, 0, 1;
+
+    Eigen::Matrix4f scale;
+    scale << 2.5, 0, 0, 0,
+            0, 2.5, 0, 0,
+            0, 0, 2.5, 0,
+            0, 0, 0, 1;
+
+    Eigen::Matrix4f translate;
+    translate << 1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1;
+
+    return translate * rotation * scale;
+}
+
 Eigen::Matrix4f objtrans::getRotationMatrix(Eigen::Vector3f &n, float angle){
     /* Rodrigues’ Rotation Formula
      * Get view matrix by Rodrigues’ Rotation Formula.
      * */
-    float cos_angle = cos((angle/180.f)*Canary_PI);
-    float sin_angle = sin((angle/180.f)*Canary_PI);
+    float cos_angle = cosf((angle/180.f)*Canary_PI);
+    float sin_angle = sinf((angle/180.f)*Canary_PI);
     Eigen::Matrix3f tmp = Eigen::Matrix3f::Zero();
     Eigen::Vector3f normal_axis = n.normalized();
     tmp << 0, -normal_axis.z(), normal_axis.y(),
@@ -35,7 +58,7 @@ Eigen::Matrix4f objtrans::getOrthographicMatrix(float eye_fov, float aspect_rati
      * And Orthographic projection matrix aimed to transfer [l,r]x[b,t]x[f,n]->[-1,1]^3;(In implement, drop Z-axis)
      * */
     float halve = Canary_PI * ((eye_fov/2.0f)/180.0f);
-    float t = tan(halve) * abs(zNear);
+    float t = tanf(halve) * abs(zNear);
     float b = -t;
     float r = aspect_ratio * t;
     float l = -r;
@@ -55,15 +78,15 @@ Eigen::Matrix4f objtrans::getPerspectiveMatrix(float eye_fov, float aspect_ratio
      * Actually, this function will not use objtrans::getOrthographicMatrix to save a little computation.
      * */
     float halve = Canary_PI * ((eye_fov/2.0f)/180.0f);
-    float t = tan(halve) * abs(zNear);
+    float t = -tan(halve) * abs(zNear);
     float b = -t;
     float r = aspect_ratio * t;
     float l = -r;
-    Eigen::Matrix4f pers2ort, tmp1=Eigen::Matrix4f::Identity(), tmp2=Eigen::Matrix4f::Identity();;
+    Eigen::Matrix4f pers2ort, tmp1=Eigen::Matrix4f::Identity(), tmp2=Eigen::Matrix4f::Identity();
     pers2ort << zNear, 0, 0, 0,
                 0, zNear, 0, 0,
                 0, 0, zNear+zFar, -zNear*zFar,
-                0, 0, 0, 1;
+                0, 0, 1.f, 0;
     tmp1(0,0) = 2.f/(r-l);
     tmp1(1,1) = 2.f/(t-b);
     tmp1(2,2) = 2.f/(zNear-zFar);

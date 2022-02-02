@@ -47,11 +47,11 @@ void Triangle::setVertex(const std::array<Eigen::Vector4f, 3> &rhs) {
     v[2] = rhs[2];
 }
 
-void Triangle::setTextureUV(int idx, const Eigen::Vector3f &rhs) {
+void Triangle::setTextureUV(int idx, const Eigen::Vector2f &rhs) {
     textureUV[idx] = rhs;
 }
 
-void Triangle::setTextureUV(const std::array<Eigen::Vector3f, 3> &rhs) {
+void Triangle::setTextureUV(const std::array<Eigen::Vector2f, 3> &rhs) {
     textureUV[0] = rhs[0];
     textureUV[1] = rhs[1];
     textureUV[2] = rhs[2];

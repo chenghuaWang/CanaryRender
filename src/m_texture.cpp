@@ -4,7 +4,7 @@
 
 #include "m_texture.h"
 
-Eigen::Vector3d MTexture::colorAt(float u, float v) {
+Eigen::Vector3f MTexture::colorAt(float u, float v) {
     if (u < 0.f) u = 0.f;
     else if (u > 1.f) u = 1.f;
     if (v < 0.f) v = 0.f;

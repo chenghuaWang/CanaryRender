@@ -4,18 +4,22 @@
 
 #include "cfg_phaser.h"
 
-inline void CanaryPhaser::option::_phaser_(const std::string &rhs) {
+void CanaryPhaser::option::_phaser_(const std::string &rhs) {
+    std::cout << "info>> find " << rhs << " option file." << std::endl;
     size_t len = 0;
     std::ifstream buf_file(rhs);
     std::string str_buf;
     buf_file >> str_buf;
     if (str_buf == ".scene"){
         buf_file >> resolution.width >> resolution.height;
+        std::cout << "info>> find .scene, get resolution " << resolution.width << "x" << resolution.height << std::endl;
     }
     else { exit(1);}
     buf_file >> str_buf;
     if (str_buf == ".object"){
+        std::cout << "info>> find .object" << std::endl;
         while(std::getline(buf_file, str_buf)){
+            if (str_buf.length() == 0) continue;
             std::regex ws_re("\\s+");
             std::vector<std::string> res(std::sregex_token_iterator(str_buf.begin(), str_buf.end(), ws_re, -1),
                                          std::sregex_token_iterator());
@@ -27,9 +31,10 @@ inline void CanaryPhaser::option::_phaser_(const std::string &rhs) {
         }
     }
     else{ exit(1);}
+    print();
 }
 
-inline void CanaryPhaser::option::print() const {
+void CanaryPhaser::option::print() const {
     std::cout << "<scene>" << resolution.width << "x" << resolution.height << std::endl;
     std::cout << "<object>" << std::endl;
     for (const auto& item:_data_){

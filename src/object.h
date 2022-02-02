@@ -1,13 +1,12 @@
 //
 // Created by wang on 2022/2/1.
 //
-
+#pragma once
 #ifndef CANARYRENDER_OBJECT_H
 #define CANARYRENDER_OBJECT_H
 #include "base.h"
 #include "triangle.h"
 #include "./phaser/cfg_phaser.h"
-#include "./phaser/OBJ_Loader.h"
 class Object{
 public:
     Object() = delete;

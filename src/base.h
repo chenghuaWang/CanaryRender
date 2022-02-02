@@ -1,6 +1,7 @@
 //
 // Created by wang on 2022/2/1.
 //
+#pragma once
 #ifndef CANARYRENDER_BASE_H
 #define CANARYRENDER_BASE_H
 #include <cmath>
@@ -21,6 +22,8 @@ typedef unsigned __int64 uint64_t;
 #endif
 #endif //CANARYRENDER_BASE_H
 
-#define Canary_PI 3.1415926f
+#define Canary_PI 3.14159265359f
 #include <Eigen/Eigen>
 #include <opencv2/opencv.hpp>
+
+#include "phaser/OBJ_Loader.h"

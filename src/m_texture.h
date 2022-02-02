@@ -15,7 +15,7 @@ public:
     }
     int Width() const {return width;}
     int Height() const {return height;}
-    Eigen::Vector3d colorAt(float u, float v);
+    Eigen::Vector3f colorAt(float u, float v);
 private:
     cv::Mat MTimage;
     int width;

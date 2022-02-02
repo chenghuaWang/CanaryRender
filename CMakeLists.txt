@@ -13,7 +13,7 @@ find_package(OpenCV 4.5 REQUIRED)
 include_directories(${OPENCV_INCLUDE_DIRS})
 
 aux_source_directory(. ALL_SRCS)
-set(PHASER_SRCS ./src/phaser/OBJ_Loader.h
+set(PHASER_SRCS ./src/phaser/OBJ_Loader.h src/phaser/OBJ_Loader.cpp
         src/phaser/argument_phaser.cpp src/phaser/argument_phaser.h
         src/phaser/cfg_phaser.cpp src/phaser/cfg_phaser.h)
 set(SRCS ./src/object.cpp ./src/object.h
@@ -30,7 +30,8 @@ set(SRCS ./src/object.cpp ./src/object.h
         src/base_global.cpp src/base_global.h
         src/base.h
         src/ras_anti_aliasing.cpp src/ras_anti_aliasing.h
-        src/shader.cpp src/shader.h)
+        src/shader.cpp src/shader.h
+        )
 
 MESSAGE("main file load ${ALL_SRCS}")
 MESSAGE("/src/phaser/ file load ${PHASER_SRCS}")

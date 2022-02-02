@@ -1,7 +1,7 @@
 //
 // Created by wang on 2022/2/1.
 //
-
+#pragma once
 #ifndef CANARYRENDER_SHADER_H
 #define CANARYRENDER_SHADER_H
 #include "base.h"
@@ -28,7 +28,7 @@ public:
 };
 
 namespace MShader{
-
+    void bulin_phong_shader();
 }
 
 #endif //CANARYRENDER_SHADER_H
