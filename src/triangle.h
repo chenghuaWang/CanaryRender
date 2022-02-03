@@ -13,6 +13,7 @@ public:
     Eigen::Vector3f normal[3];
     Eigen::Vector2f textureUV[3];  // u,v map-axis
     MTexture *texture = nullptr;
+    MTexture *highMap = nullptr;
     Triangle();
     void boundTexture(MTexture *rhs);
     void setColour(int idx, const Eigen::Vector3f &rhs);

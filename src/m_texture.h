@@ -9,6 +9,7 @@ class MTexture{
 public:
     MTexture() = delete;
     explicit MTexture(const std::string &rhs){
+        std::cout << "info>> get " << rhs << " success." << std::endl;
         MTimage = cv::imread(rhs);
         width = MTimage.cols;
         height = MTimage.rows;

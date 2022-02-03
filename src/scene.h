@@ -25,7 +25,6 @@ namespace CanaryScene{
         float cam_fov, aspect_ratio, zNear, zFar;
         CanaryPhaser::option config;
         Eigen::Vector3f CameraPos = {0,0,10};
-        std::vector<light> Light{};
     };
 }
 

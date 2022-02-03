@@ -9,6 +9,6 @@ Eigen::Vector3f MTexture::colorAt(float u, float v) {
     else if (u > 1.f) u = 1.f;
     if (v < 0.f) v = 0.f;
     else if (v > 1.f) v = 1.f;
-    auto colour = MTimage.at<cv::Vec3b>(int(u*(float)width), int((1.f-v)*(float)height));
-    return Eigen::Vector3f(colour[0], colour[1], colour[2]);
+    auto colour = MTimage.at<cv::Vec3b>(int((1.f-v)*(float)height), int(u*(float)width));
+    return Eigen::Vector3f(colour[2], colour[1], colour[1]);
 }

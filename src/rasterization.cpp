@@ -4,6 +4,8 @@
 
 #include "rasterization.h"
 
+#include <utility>
+
 void rasterizer::setModel(const Eigen::Matrix4f &rhs) { M = rhs;}
 
 void rasterizer::setView(const Eigen::Matrix4f &rhs) { V = rhs;}
@@ -32,8 +34,47 @@ void rasterizer::RasterizeTriangle(const Triangle &t, const std::array<Eigen::Ve
              * I set colour to {0, 0, 0}, while background is {255, 255, 255}
              * */
             drawWireTriangle(t);
-        case RasterizeType::SOLID:
-            break;
+        case RasterizeType::SOLID: {
+            /* shade fragment.
+             * 1. get the bounding box.
+             * 2. Calculate interpolate.
+             * 3. Go through each pixel. Use modified shader to get its color or texture.
+             * 4. Set color and zBuffer.
+             * */
+            int top = std::ceil(fmax(t.v[0].y(), fmax(t.v[1].y(), t.v[2].y())));
+            int bot = std::floor(fmin(t.v[0].y(), fmin(t.v[1].y(), t.v[2].y())));
+            int lef = std::floor(fmin(t.v[0].x(), fmin(t.v[1].x(), t.v[2].x())));
+            int rig = std::ceil(fmax(t.v[0].x(), fmax(t.v[1].x(), t.v[2].x())));
+            for (int x = lef; x <= rig; ++x){
+                for (int y = bot; y <= top; ++y){
+                    float _px = (float)x + 0.5f, _py = (float)y + 0.5f;
+                    float alpha(0.f), beta(0.f), gamma(0.f);
+                    if (inTriangle(_px, _py, t)){
+                        auto BarycentricCo = getBarycentric(_px, _py, t);
+                        alpha = BarycentricCo.x(), beta = BarycentricCo.y(), gamma = BarycentricCo.z();
+                        /* Interpolate z, w and normal.
+                         * */
+                        float w_reciprocal = 1.f / (alpha / t.v[0].w() + beta / t.v[1].w() + gamma / t.v[2].w());
+                        float z_interpolated = alpha * t.v[0].z() / t.v[0].w() + beta * t.v[1].z() / t.v[1].w() + gamma * t.v[2].z() / t.v[2].w();
+                        z_interpolated *= w_reciprocal;
+                        int zbuf_idx = getIdx(x, y);
+                        if (z_interpolated < ZBuf[zbuf_idx]){
+                            ZBuf[zbuf_idx] = z_interpolated;
+                            auto interpolated_color = alpha * t.colour[0] + beta * t.colour[1] + gamma * t.colour[2];
+                            auto interpolated_normal = alpha * t.normal[0] + beta * t.normal[1] + gamma * t.normal[2];
+                            auto interpolated_texcoords = alpha * t.textureUV[0] + beta * t.textureUV[1] + gamma * t.textureUV[2];
+                            auto interpolated_shader = alpha * view_pos[0] + beta * view_pos[1] + gamma * view_pos[2];
+                            FragmentShaderUnit FragBlock(CameraPos, interpolated_color, interpolated_normal.normalized(),
+                                                         interpolated_texcoords, t.texture, Light);
+                            FragBlock.setViewPos(interpolated_shader);
+                            auto _colour = FragmentShader(FragBlock);
+                            setPixel(x, y, _colour);
+                        }
+                    }
+                }
+            }
+        }
+        break;
         default:
             exit(1);
     }
@@ -92,11 +133,11 @@ void rasterizer::drawObject() {
                 item.w() = 1.f;
                 item = ViewPort * item;
             }
-            for (int i=0;i < 3; ++i){
-                ShadeTri.setVertex(i, newV[i]);
-                ShadeTri.setNormal(i, newNormal[i]);
+            for (int k=0;k < 3; ++k){
+                ShadeTri.setVertex(k, newV[k]);
+                ShadeTri.setNormal(k, newNormal[k]);
             }
-            RasterizeTriangle(ShadeTri, ViewPos, RasterizeType::WIRED);
+            RasterizeTriangle(ShadeTri, ViewPos, RasterizeType::SOLID);
         }
     }
 }
@@ -167,4 +208,34 @@ void rasterizer::clearObject() {
 
 std::vector<Eigen::Vector3f>& rasterizer::frame() {
     return FragmentBuf;
+}
+
+bool rasterizer::inTriangle(float a, float b, const Triangle &rhs) {
+    float dx0 = a - rhs.v[0].x(), dy0 = b - rhs.v[0].y();
+    float dx1 = a - rhs.v[1].x(), dy1 = b - rhs.v[1].y();
+    float dx2 = a - rhs.v[2].x(), dy2 = b - rhs.v[2].y();
+    bool j0 = (dx0 * dy1 - dy0 * dx1) > 0;
+    bool j1 = (dx1 * dy2 - dy1 * dx2) > 0;
+    bool j2 = (dx2 * dy0 - dy2 * dx0) > 0;
+    return (j0==j1 && j1 == j2 && j2 == j0);
+}
+
+Eigen::Vector3f rasterizer::getBarycentric(float x, float y, const Triangle &rhs) {
+    float c1 = (x*(rhs.v[1].y() - rhs.v[2].y()) + (rhs.v[2].x() - rhs.v[1].x())*y + rhs.v[1].x()*rhs.v[2].y()-
+            rhs.v[2].x()*rhs.v[1].y()) / (rhs.v[0].x()*(rhs.v[1].y() - rhs.v[2].y())+
+                    (rhs.v[2].x() - rhs.v[1].x())*rhs.v[0].y() + rhs.v[1].x()*rhs.v[2].y()-
+                    rhs.v[2].x()*rhs.v[1].y());
+    float c2 = (x*(rhs.v[2].y() - rhs.v[0].y()) + (rhs.v[0].x() - rhs.v[2].x())*y + rhs.v[2].x()*rhs.v[0].y()-
+            rhs.v[0].x()*rhs.v[2].y()) / (rhs.v[1].x()*(rhs.v[2].y() - rhs.v[0].y())+
+                    (rhs.v[0].x() - rhs.v[2].x())*rhs.v[1].y() + rhs.v[2].x()*rhs.v[0].y()-
+                    rhs.v[0].x()*rhs.v[2].y());
+    float c3 = (x*(rhs.v[0].y() - rhs.v[1].y()) + (rhs.v[1].x() - rhs.v[0].x())*y + rhs.v[0].x()*rhs.v[1].y()-
+            rhs.v[1].x()*rhs.v[0].y()) / (rhs.v[2].x()*(rhs.v[0].y() - rhs.v[1].y())+
+                    (rhs.v[1].x() - rhs.v[0].x())*rhs.v[2].y() + rhs.v[0].x()*rhs.v[1].y()-
+                    rhs.v[1].x()*rhs.v[0].y());
+    return Eigen::Vector3f ({c1,c2,c3});
+}
+
+void rasterizer::setFragmentShader(std::function<Eigen::Vector3f(FragmentShaderUnit)> _fs) {
+    FragmentShader = std::move(_fs);
 }

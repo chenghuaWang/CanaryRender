@@ -6,7 +6,12 @@ int main() {
     CanaryScene::scene sce(R"(D:\Project\CanaryRender\ModelZoo\spot\option.txt)",
                                                      700, 700,45.f, 1.f, 0.1f, 50.f);
     Eigen::Vector3f camera_pos({0,0,10});
+    light l1{{20,20,20}, {500,500,500}}, l2{{-20, 20, 0},{500,500,500}};
+    sce.addLight(l1);
+    sce.addLight(l2);
     sce.changeCameraPos(camera_pos);
+    std::function<Eigen::Vector3f(FragmentShaderUnit)> main_shader = MShader::TexturePhongFragmentFhader;
+    sce.r.setFragmentShader(main_shader);
     int key = 0;
     float angle = 100.f;
     while(key!=27){

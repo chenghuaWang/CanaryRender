@@ -4,10 +4,7 @@
 
 #include "object.h"
 
-Object::~Object() {
-    delete texture;
-    delete high_map;
-}
+Object::~Object() = default;
 
 Object::Object(const CanaryPhaser::objCfgNode &rhs) {
     if (!rhs.tex_map.empty()) texture = new MTexture(rhs.tex_map);
@@ -23,6 +20,8 @@ Object::Object(const CanaryPhaser::objCfgNode &rhs) {
                     tmp->setNormal(j,Eigen::Vector3f(mesh.Vertices[i+j].Normal.X,mesh.Vertices[i+j].Normal.Y,mesh.Vertices[i+j].Normal.Z));
                     tmp->setTextureUV(j,Eigen::Vector2f(mesh.Vertices[i+j].TextureCoordinate.X, mesh.Vertices[i+j].TextureCoordinate.Y));
                 }
+                tmp->texture = texture;
+                tmp->highMap = high_map;
                 TriangleList.push_back(tmp);
             }
         }

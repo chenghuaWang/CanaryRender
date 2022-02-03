@@ -1,4 +1,4 @@
 .scene
 700 700
 .object
-D:/college/GAMES101/Assignment/Assignment3/src/models/spot/spot_triangulated_good.obj
+D:/college/GAMES101/Assignment/Assignment3/src/models/spot/spot_triangulated_good.obj D:/college/GAMES101/Assignment/Assignment3/src/models/spot/spot_texture.png

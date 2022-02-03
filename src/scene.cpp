@@ -29,10 +29,11 @@ void CanaryScene::scene::process(float angle) {
 }
 
 void CanaryScene::scene::addLight(light &rhs) {
-
+    r.Light.push_back(rhs);
 }
 
 void CanaryScene::scene::changeCameraPos(Eigen::Vector3f &rhs) {
     CameraPos = rhs;
+    r.CameraPos = CameraPos;
     r.setView(objtrans::getViewMatrix(CameraPos));
 }
