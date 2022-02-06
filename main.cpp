@@ -1,4 +1,4 @@
-#include "src/scene.h"
+#include "src/rasRenderer/scene.h"
 #include "omp.h"
 int main() {
     omp_set_num_threads(4);

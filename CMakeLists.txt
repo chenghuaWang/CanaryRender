@@ -16,22 +16,24 @@ aux_source_directory(. ALL_SRCS)
 set(PHASER_SRCS ./src/phaser/OBJ_Loader.h src/phaser/OBJ_Loader.cpp
         src/phaser/argument_phaser.cpp src/phaser/argument_phaser.h
         src/phaser/cfg_phaser.cpp src/phaser/cfg_phaser.h)
-set(SRCS ./src/object.cpp ./src/object.h
-        src/material.cpp src/material.h
-        src/bvh.cpp src/bvh.h
-        src/sah.cpp src/sah.h
-        src/triangle.cpp src/triangle.h
-        src/ray_trace.cpp src/ray_trace.h
-        src/obj_lod.cpp src/obj_lod.h
-        src/rasterization.cpp src/rasterization.h
-        src/obj_transform.cpp src/obj_transform.h
-        src/scene.cpp src/scene.h
-        src/m_texture.cpp src/m_texture.h
-        src/base_global.cpp src/base_global.h
-        src/base.h
-        src/ras_anti_aliasing.cpp src/ras_anti_aliasing.h
-        src/shader.cpp src/shader.h
-        )
+set(SRCS src/rasRenderer/object.cpp src/rasRenderer/object.h
+        src/rasRenderer/material.cpp src/rasRenderer/material.h
+        src/rayRenderer/bvh.cpp src/rayRenderer/bvh.h
+        src/rayRenderer/sah.cpp src/rayRenderer/sah.h
+        src/rasRenderer/triangle.cpp src/rasRenderer/triangle.h
+        src/rayRenderer/RayTraceRenderer.cpp src/rayRenderer/RayTraceRenderer.h
+        src/rasRenderer/obj_lod.cpp src/rasRenderer/obj_lod.h
+        src/rasRenderer/rasterization.cpp src/rasRenderer/rasterization.h
+        src/rasRenderer/obj_transform.cpp src/rasRenderer/obj_transform.h
+        src/rasRenderer/scene.cpp src/rasRenderer/scene.h
+        src/rasRenderer/m_texture.cpp src/rasRenderer/m_texture.h
+        src/rayRenderer/base_rt.cpp src/rayRenderer/base_rt.h
+        src/rasRenderer/base.h
+        src/rasRenderer/ras_anti_aliasing.cpp src/rasRenderer/ras_anti_aliasing.h
+        src/rasRenderer/shader.cpp src/rasRenderer/shader.h
+        src/rayRenderer/Ray.cpp src/rayRenderer/Ray.h
+        src/rayRenderer/object_ray.cpp src/rayRenderer/object_ray.h
+        src/rayRenderer/Light.cpp src/rayRenderer/Light.h)
 
 MESSAGE("main file load ${ALL_SRCS}")
 MESSAGE("/src/phaser/ file load ${PHASER_SRCS}")

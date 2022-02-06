@@ -1,8 +1,0 @@
-//
-// Created by wang on 2022/2/1.
-//
-
-#ifndef CANARYRENDER_BASE_GLOBAL_H
-#define CANARYRENDER_BASE_GLOBAL_H
-
-#endif //CANARYRENDER_BASE_GLOBAL_H

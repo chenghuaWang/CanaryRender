@@ -5,7 +5,7 @@
 #ifndef CANARYRENDER_SCENE_H
 #define CANARYRENDER_SCENE_H
 #include "base.h"
-#include "phaser/cfg_phaser.h"
+#include "../phaser/cfg_phaser.h"
 #include "object.h"
 #include "material.h"
 #include "rasterization.h"

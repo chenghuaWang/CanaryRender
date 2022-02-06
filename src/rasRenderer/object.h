@@ -7,7 +7,7 @@
 #include "base.h"
 #include "triangle.h"
 #include "m_texture.h"
-#include "./phaser/cfg_phaser.h"
+#include "../phaser/cfg_phaser.h"
 class Object{
 public:
     Object() = delete;

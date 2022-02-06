@@ -5,4 +5,6 @@
 #ifndef CANARYRENDER_BVH_H
 #define CANARYRENDER_BVH_H
 
+#include "RayTraceRenderer.h"
+
 #endif //CANARYRENDER_BVH_H

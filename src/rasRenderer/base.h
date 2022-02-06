@@ -4,6 +4,7 @@
 #pragma once
 #ifndef CANARYRENDER_BASE_H
 #define CANARYRENDER_BASE_H
+
 #include <cmath>
 #include <vector>
 #include <string>
@@ -20,10 +21,11 @@ typedef unsigned __int64 uint64_t;
 #else
 #include <inttypes.h>
 #endif
-#endif //CANARYRENDER_BASE_H
 
 #define Canary_PI 3.14159265359f
 #include <Eigen/Eigen>
 #include <opencv2/opencv.hpp>
 
-#include "phaser/OBJ_Loader.h"
+#include "../phaser/OBJ_Loader.h"
+
+#endif //CANARYRENDER_BASE_H
